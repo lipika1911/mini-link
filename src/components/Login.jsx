@@ -75,7 +75,7 @@ const Login = () => {
     <Card className="max-w-md mx-auto">
         <CardHeader className="text-center">
             <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>If you already have an account</CardDescription>
+            <CardDescription className="text-md">If you already have an account</CardDescription>
             {error && <Error message={error.message}/>}
         </CardHeader>
         <CardContent className="space-y-4">
