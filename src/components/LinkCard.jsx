@@ -5,6 +5,17 @@ import { Copy,Download, Trash } from 'lucide-react'
 import UseFetch from '@/hooks/UseFetch'
 import { deleteUrl } from '@/db/apiUrls'
 import { BeatLoader } from 'react-spinners'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const LinkCard = ({url, fetchUrls}) => {
     
@@ -60,12 +71,29 @@ const LinkCard = ({url, fetchUrls}) => {
             <Button variant="ghost" onClick={downloadImage}>
                 <Download />
             </Button>
-            <Button 
-                variant="ghost"
-                onClick={()=>fnDelete().then(()=>fetchUrls())}
-            >
-                {loadingDelete ? <BeatLoader size={5} color='white' /> : <Trash /> }
-            </Button>
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button variant="ghost">
+                    {loadingDelete ? <BeatLoader size={5} color='white' /> : <Trash />}
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="w-[90vw] max-w-sm">
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={() => fnDelete().then(() => fetchUrls())}
+                    >
+                        Delete
+                    </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     </div>
   )
