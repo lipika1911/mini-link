@@ -79,18 +79,18 @@ const LinkCard = ({url, fetchUrls}) => {
                 </AlertDialogTrigger>
                 <AlertDialogContent className="w-[90vw] max-w-sm">
                     <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        This action cannot be undone.
-                    </AlertDialogDescription>
+                        <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone.
+                        </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                        onClick={() => fnDelete().then(() => fetchUrls())}
-                    >
-                        Delete
-                    </AlertDialogAction>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={() => fnDelete().then(() => fetchUrls())}
+                        >
+                            Delete
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
