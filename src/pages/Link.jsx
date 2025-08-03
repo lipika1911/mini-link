@@ -3,7 +3,7 @@ import { getClicksForUrl } from '@/db/apiClicks';
 import { deleteUrl, getUrl } from '@/db/apiUrls';
 import UseFetch from '@/hooks/UseFetch';
 import { LinkIcon } from 'lucide-react';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BarLoader,  BeatLoader } from 'react-spinners';
 import { Copy,Download, Trash } from 'lucide-react'
@@ -31,8 +31,16 @@ import DeviceStats from '@/components/DeviceStats';
 const Link = () => {
 
   const {id} = useParams();
-  const {user} = UrlState();
+  const { user, frontendUrl } = UrlState();
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`${frontendUrl}/${url?.short_url}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 500);
+  };
+
   const downloadImage = () => {
     const imageUrl = url?.qr;
     const fileName = url?.title;
@@ -76,11 +84,12 @@ const Link = () => {
         <div className='flex flex-col items-start gap-8 rounded-lg sm:w-2/5'>
           <span className='text-6xl font-extrabold hover:underline cursor-pointer'>{url?.title}</span>
           <a 
-            href={`http://localhost:5173/${link}`} 
+            href={`${frontendUrl}/${link}`} 
             target='_blank' 
+            rel='noopener noreferrer'
             className='text-3xl sm:text-4xl text-blue-400 font-bold hover:underline cursor-pointer'
           >
-            http://localhost:5173/{link}
+            {`${frontendUrl}/${link}`}
           </a>
           <a 
             href={url?.original_url} 
@@ -93,15 +102,20 @@ const Link = () => {
           <span className='flex items-end font-extralight text-sm'>
             {new Date(url?.created_at).toLocaleString()}
           </span>
-          <div className='flex gap-2'>
-            <Button 
+          <div className='relative flex gap-2'>
+            <div className='relative'>
+              <Button 
                 variant="ghost"
-                onClick={()=>
-                    navigator.clipboard.writeText(`https://mini-link/${url?.short_url}`)
-                }
-            >
-                <Copy/>
-            </Button>
+                onClick={handleCopy}
+              >
+                <Copy />
+              </Button>
+              {copied && (
+                <div className='absolute top-full mt-1 left-1/2 -translate-x-1/2 bg-green-600 text-white px-2 py-0.5 text-xs rounded shadow-md whitespace-nowrap z-10'>
+                  Link copied!
+                </div>
+              )}
+            </div>
             <Button variant="ghost" onClick={downloadImage}>
                 <Download />
             </Button>

@@ -4,22 +4,25 @@ import { getCurrentUser } from "./db/apiAuth"
 
 const UrlContext = createContext()
 
-const UrlProvider = ({children}) => {
+const UrlProvider = ({ children }) => {
+  const { data: user, loading, fn: fetchUser } = UseFetch(getCurrentUser)
+  const isAuthenticated = user?.role === "authenticated"
+  
+  const frontendUrl = import.meta.env.VITE_FRONTEND_URL
 
-    const {data:user, loading, fn:fetchUser} = UseFetch(getCurrentUser);
-    const isAuthenticated = user?.role === "authenticated";
+  useEffect(() => {
+    fetchUser()
+  }, [])
 
-    useEffect(()=>{
-        fetchUser();
-    },[]);
-
-    return <UrlContext.Provider value={{user, fetchUser, loading, isAuthenticated}}>
-        {children}
+  return (
+    <UrlContext.Provider value={{ user, fetchUser, loading, isAuthenticated, frontendUrl }}>
+      {children}
     </UrlContext.Provider>
+  )
 }
 
 export const UrlState = () => {
-    return useContext(UrlContext);
+  return useContext(UrlContext)
 }
 
 export default UrlProvider
