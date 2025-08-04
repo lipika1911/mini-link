@@ -110,7 +110,7 @@ const CreateLink = () => {
             {errors.longUrl && <Error message={errors.longUrl} />}
 
             <div className='flex items-center gap-2'>
-                <Card className="p-2">mini.link</Card> /
+                <Card className="p-2 w-full">miny-link.vercel.app</Card> /
                 <Input 
                     id="customUrl" 
                     placeholder="Custom Link (Optional)" 
